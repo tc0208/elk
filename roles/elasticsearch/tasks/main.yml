@@ -1,0 +1,21 @@
+---
+
+- name: add elasticsearch yum repo
+  copy: >
+    src=elasticsearch.repo dest={{ yum_repo_path }}/elasticsearch.repo owner=root group=root mode=0644
+  sudo: True
+
+- name: install elasticsearch
+  remote_user: "{{ remote_user }}"
+  sudo: True
+  yum: name={{ item }} state=present
+  with_items:
+    - elasticsearch-2.2.0
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6")
+
+- name: deploy elasticsearch.j2 file
+  template: src=elasticsearch.j2 dest={{ elasticsearch_conf_path }}/elasticsearch.yml owner={{ user }} group={{ group }} mode=0644
+  sudo: True
+  notify: restart elasticsearch
+
+

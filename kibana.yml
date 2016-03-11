@@ -1,0 +1,5 @@
+---
+- name: setup kibana
+  hosts: all
+  roles:
+    - kibana

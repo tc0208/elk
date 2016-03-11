@@ -1,0 +1,6 @@
+---
+- name: setup filebeat to collect icinga2 service state
+  hosts: all
+  roles:
+    - filebeat_common
+    - filebeat_icinga2

@@ -1,0 +1,32 @@
+---
+
+- name: add beats yum repo
+  copy: >
+    src=beats.repo dest={{ yum_repo_path }}/beats.repo owner=root group=root mode=0644
+  sudo: True
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6")
+
+- name: add beats yum repo
+  copy: >
+    src=beats.list dest={{ apt_repo_path }}/beats.list owner=root group=root mode=0644
+  sudo: True
+  when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
+
+
+- name: install filebeat
+  remote_user: "{{ remote_user }}"
+  sudo: True
+  yum: name={{ item }} state=present
+  with_items:
+    - filebeat-1.1.1
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6")
+
+- name: install filebeat
+  remote_user: "{{ remote_user }}"
+  sudo: True
+  apt: name={{ item }} state=present
+  with_items:
+    - filebeat
+  when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
+
+

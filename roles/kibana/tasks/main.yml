@@ -1,0 +1,21 @@
+---
+
+- name: add kibana yum repo
+  copy: >
+    src=kibana.repo dest={{ yum_repo_path }}/kibana.repo owner=root group=root mode=0644
+  sudo: True
+
+- name: install kibana
+  remote_user: "{{ remote_user }}"
+  sudo: True
+  yum: name={{ item }} state=present
+  with_items:
+    - kibana-4.4.1
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6")
+
+- name: deploy kibana.yml file
+  template: src=kibana.j2 dest={{ kibana_conf_path }}/kibana.yml owner=root group=root mode=0644
+  sudo: True
+  notify: restart kibana
+
+

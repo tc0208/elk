@@ -1,0 +1,34 @@
+---
+
+- name: add logstash yum repo
+  copy: >
+    src=logstash.repo dest={{ yum_repo_path }}/logstash.repo owner=root group=root mode=0644
+  sudo: True
+
+- name: install logstash
+  remote_user: "{{ remote_user }}"
+  sudo: True
+  yum: name={{ item }} state=present
+  with_items:
+    - logstash-2.2.2
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6")
+
+- name: deploy input conf file
+  template: >
+    src=10-beats-input.j2 dest={{ conf_path }}/10-beats-input.conf owner=root group=root mode=0644
+  sudo: True
+  notify: restart logstash
+
+- name: deploy filter conf file
+  template: >
+    src=20-filter.j2 dest={{ conf_path }}/20-filter.conf owner=root group=root mode=0644
+  sudo: True
+  notify: restart logstash
+
+- name: deploy output conf file
+  template: >
+    src=30-beats-output.j2 dest={{ conf_path }}/30-beats-output.conf owner=root group=root mode=0644
+  sudo: True
+  notify: restart logstash
+
+

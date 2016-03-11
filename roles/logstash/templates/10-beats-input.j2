@@ -1,0 +1,11 @@
+input {
+  syslog {
+    port => {{ syslog_port }}
+    type => "syslog"
+  }
+  beats {
+    port => {{ beats_port }}
+    type => "beats"
+  }
+}
+

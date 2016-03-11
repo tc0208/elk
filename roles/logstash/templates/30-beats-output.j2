@@ -1,0 +1,33 @@
+output {
+  if [type] == "apache2" {
+   elasticsearch {
+     hosts => ["{{ elasticsearch }}"]
+     sniffing => true
+     manage_template => false
+     index => "web"
+   }
+  }
+  if [type] == "icinga2" {
+   elasticsearch {
+     hosts => ["{{ elasticsearch }}"]
+     sniffing => true
+     manage_template => false
+     index => "mon"
+   }
+  }
+  if [type] == "syslog" {
+   elasticsearch {
+     hosts => ["{{ elasticsearch }}"]
+     sniffing => true
+     manage_template => false
+     index => "mon"
+   }
+  }
+  elasticsearch {
+    hosts => ["{{ elasticsearch }}"]
+    sniffing => true
+    manage_template => false
+    index => "elk"
+  }
+}
+

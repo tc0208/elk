@@ -1,0 +1,27 @@
+filter {
+  if [type] == "syslog" {
+    grok {
+      match => [ "message", "%{TIMESTAMP_ISO8601:syslog_timestamp} %{SYSLOGHOST:syslog_ip} %{DATA:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" ]
+    }
+  }
+
+  if [type] =~ "postfix" {
+    grok {
+      match => [ "message", "%{SYSLOGBASE} %{GREEDYDATA:message}" ]
+      overwrite => [ "message" ]
+    }
+  }
+
+  if [type] =~ "apache2" {
+    grok {
+      match => [ "message", "%{COMBINEDAPACHELOG}" ]
+    }
+  }
+
+  if [type] =~ "icinga2" {
+    grok {
+      match => [ "message", "%{NUMBER:nagios_epoch} %{DATA:nagios_hostname} %{DATA:nagios_service} %{DATA:nagios_state} %{GREEDYDATA:nagios_comment}" ]
+    }
+  }
+}
+

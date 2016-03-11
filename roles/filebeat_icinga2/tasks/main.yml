@@ -1,0 +1,8 @@
+---
+
+- name: deploy filebeat.j2 file
+  template: src=filebeat.j2 dest={{ conf_path }}/filebeat.yml owner={{ user }} group={{ group }} mode=0644
+  sudo: True
+  notify: restart filebeat
+
+

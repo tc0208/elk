@@ -1,0 +1,7 @@
+remote_user: fih
+user: root
+group: root
+
+conf_path: /etc/filebeat
+
+logstash_host: centos:5001

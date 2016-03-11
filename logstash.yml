@@ -1,0 +1,5 @@
+---
+- name: setup logstash
+  hosts: all
+  roles:
+    - logstash

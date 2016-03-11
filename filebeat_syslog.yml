@@ -1,0 +1,6 @@
+---
+- name: setup filebeat to collect network syslog
+  hosts: all
+  roles:
+    - filebeat_common
+    - filebeat_syslog

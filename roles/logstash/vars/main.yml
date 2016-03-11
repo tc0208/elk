@@ -1,0 +1,10 @@
+remote_user: fih
+yum_repo_path: /etc/yum.repos.d
+
+conf_path: /etc/logstash/conf.d
+user: logstash
+group: logstash
+
+elasticsearch: "http://10.57.46.29:9200"
+syslog_port: 5514
+beats_port: 5001
