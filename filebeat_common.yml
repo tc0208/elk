@@ -1,0 +1,5 @@
+---
+- name: install filebeat
+  hosts: all
+  roles:
+    - filebeat_common

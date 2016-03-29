@@ -5,6 +5,6 @@ conf_path: /etc/logstash/conf.d
 user: logstash
 group: logstash
 
-elasticsearch: "http://10.57.46.29:9200"
+elasticsearch: "http://10.58.70.98:9200"
 syslog_port: 5514
 beats_port: 5001
