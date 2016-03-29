@@ -14,7 +14,7 @@
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6")
 
 - name: deploy kibana.yml file
-  template: src=kibana.j2 dest={{ kibana_conf_path }}/kibana.yml.test owner=root group=root mode=0644
+  template: src=kibana.j2 dest={{ kibana_conf_path }}/kibana.yml owner=root group=root mode=0644
   sudo: True
   notify: restart kibana
 
