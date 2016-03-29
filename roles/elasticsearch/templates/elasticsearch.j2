@@ -149,6 +149,8 @@ cluster.name: {{ cluster_name }}
 # Path to directory where to store index data allocated for this node.
 #
 #path.data: /path/to/data
+path.data: {{ elasticsearch_data_path }}
+
 #
 # Can optionally include more than one location, causing data to be striped across
 # the locations (a la RAID 0) on a file level, favouring locations with most free
@@ -211,7 +213,7 @@ cluster.name: {{ cluster_name }}
 
 # Set both 'bind_host' and 'publish_host':
 #
-network.host: {{ network_host }}
+network.host: {{ ansible_eth0.ipv4.address }}
 
 # Set a custom port for the node to node communication (9300 by default):
 #

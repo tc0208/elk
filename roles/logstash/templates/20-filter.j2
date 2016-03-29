@@ -1,7 +1,8 @@
 filter {
   if [type] == "syslog" {
     grok {
-      match => [ "message", "%{TIMESTAMP_ISO8601:syslog_timestamp} %{SYSLOGHOST:syslog_ip} %{DATA:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" ]
+#      match => [ "message", "%{TIMESTAMP_ISO8601:syslog_timestamp} %{SYSLOGHOST:syslog_ip} %{DATA:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" ]
+      match => [ "message", "^<%{NUMBER:syslog_pri}>%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" ]
     }
   }
 
@@ -12,9 +13,41 @@ filter {
     }
   }
 
+  if [type] == "squid" {
+    grok {
+#      match => [ "message", "%{NUMBER:timestamp} %{NUMBER:response_time} %{IP:src_ip} %{WORD:squid_request_status}/%{NUMBER:http_status_code} %{NUMBER:reply_size_include_header} %{WORD:http_method} %{WORD:http_protocol}://%{HOSTNAME:dst_host}%{NOTSPACE:request_url} %{NOTSPACE:user} %{WORD:squid}/(?:-|%{IP:dst_ip}) %{NOTSPACE:content_type}" ]
+#      match => [ "message", "%{POSINT:timestamp}.%{WORD:timestamp_ms}\s+%{NUMBER:response_time} %{IP:src_ip} %{WORD:squid_request_status}/%{NUMBER:http_status_code} %{NUMBER:reply_size_include_header} %{WORD:http_method} %{WORD:http_protocol}://%{HOSTNAME:dst_host}%{NOTSPACE:request_url} %{NOTSPACE:user} %{WORD:squid}/(?:-|%{IP:dst_ip}) %{NOTSPACE:content_type}" ]
+      match => [ "message", "%{POSINT:timestamp}.%{WORD:timestamp_ms}\s+%{NUMBER:response_time} %{IP:src_ip} %{WORD:squid_request_status}/%{NUMBER:http_status_code} %{NUMBER:reply_size_include_header} %{WORD:http_method} (%{URIPROTO:http_proto}://)?%{IPORHOST:dst_host}(:%{POSINT:port})?(?:%{URIPATHPARAM:uri_param})? %{NOTSPACE:user} %{WORD:squid}/(?:-|%{IP:dst_ip}) %{NOTSPACE:content_type}" ]
+    }
+    date {
+      match => [ "timestamp", "UNIX" ]
+#      remove_field => [ "timestamp" ]
+    }
+  }
+
   if [type] =~ "apache2" {
     grok {
       match => [ "message", "%{COMBINEDAPACHELOG}" ]
+    }
+  }
+
+#  if [type] =~ "apr_web" {
+#    grok {
+#      match => [ "message", "%{COMBINEDAPACHELOG}" ]
+#    }
+#    date {
+#      match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
+#    }
+#  }
+
+  if [type] =~ "apr_web" {
+    grok {
+      match => [ "message", "%{IP:client_ip} %{USER:ident} %{USER:auth} \[%{HTTPDATE:timestamp}\] \"%{WORD:method} /%{NOTSPACE:request_page} HTTP/%{NUMBER:http_version}\" %{NUMBER:status} %{NUMBER:bytes}" ]
+    }
+    date {
+      # Try to pull the timestamp from the 'timestamp' field (parsed above with
+      # grok). The apache time format looks like: "18/Aug/2011:05:44:34 -0700"
+      match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
     }
   }
 
@@ -23,5 +56,12 @@ filter {
       match => [ "message", "%{NUMBER:nagios_epoch} %{DATA:nagios_hostname} %{DATA:nagios_service} %{DATA:nagios_state} %{GREEDYDATA:nagios_comment}" ]
     }
   }
+
+  if [type] =~ "gelf" {
+    grok {
+      match => [ "message", "%{NUMBER:nagios_epoch} %{DATA:nagios_hostname} %{DATA:nagios_service} %{DATA:nagios_state} %{GREEDYDATA:nagios_comment}" ]
+    }
+  }
+
 }
 

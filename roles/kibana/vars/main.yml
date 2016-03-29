@@ -8,3 +8,5 @@ group: kibana
 server_port: 9999
 server_host: "10.57.46.29"
 elasticsearch_url: "http://10.57.46.29:9200"
+elasticsearch_host: "10.57.46.29"
+elasticsearch_port: "9200"

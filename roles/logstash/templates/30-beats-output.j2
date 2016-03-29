@@ -7,7 +7,55 @@ output {
      index => "web"
    }
   }
+  if [type] == "apr_web" {
+   elasticsearch {
+     hosts => ["{{ elasticsearch  }}"]
+     sniffing => true
+     manage_template => false
+     index => "apr"
+   }
+  }
+  if [type] == "http" {
+   elasticsearch {
+     hosts => ["{{ elasticsearch }}"]
+     sniffing => true
+     manage_template => false
+     index => "web"
+   }
+  }
+  if [type] == "squid" {
+   elasticsearch {
+     hosts => ["{{ elasticsearch }}"]
+     sniffing => true
+     manage_template => false
+     index => "squid"
+   }
+  }
+  if [type] == "filesystem" {
+   elasticsearch {
+     hosts => ["{{ elasticsearch }}"]
+     sniffing => true
+     manage_template => false
+     index => "top"
+   }
+  }
+  if [type] == "system" {
+   elasticsearch {
+     hosts => ["{{ elasticsearch }}"]
+     sniffing => true
+     manage_template => false
+     index => "top"
+   }
+  }
   if [type] == "icinga2" {
+   elasticsearch {
+     hosts => ["{{ elasticsearch }}"]
+     sniffing => true
+     manage_template => false
+     index => "mon"
+   }
+  }
+  if [type] == "gelf" {
    elasticsearch {
      hosts => ["{{ elasticsearch }}"]
      sniffing => true
@@ -24,10 +72,10 @@ output {
    }
   }
   elasticsearch {
-    hosts => ["{{ elasticsearch }}"]
-    sniffing => true
-    manage_template => false
-    index => "elk"
+     hosts => ["{{ elasticsearch }}"]
+     sniffing => true
+     manage_template => false
+     index => "elk"
   }
 }
 
