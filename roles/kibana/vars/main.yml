@@ -6,7 +6,7 @@ user: kibana
 group: kibana
 
 server_port: 9999
-server_host: "10.57.46.29"
-elasticsearch_url: "http://10.57.46.29:9200"
-elasticsearch_host: "10.57.46.29"
+server_host: "10.58.70.98"
+elasticsearch_url: "http://10.58.70.98:9200"
+elasticsearch_host: "10.58.70.98"
 elasticsearch_port: "9200"

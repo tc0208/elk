@@ -10,7 +10,7 @@
   sudo: True
   yum: name={{ item }} state=present
   with_items:
-    - kibana-4.4.1
+    - kibana-4.5.0
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6")
 
 - name: deploy kibana.yml file

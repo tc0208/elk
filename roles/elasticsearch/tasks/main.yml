@@ -10,7 +10,7 @@
   sudo: True
   yum: name={{ item }} state=present
   with_items:
-    - elasticsearch-2.2.0
+    - elasticsearch-2.3.0
     - java-1.8.0-openjdk
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6")
 
