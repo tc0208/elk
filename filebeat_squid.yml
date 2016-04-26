@@ -1,0 +1,6 @@
+---
+- name: setup filebeat to collect squid access log
+  hosts: all
+  roles:
+    - filebeat_common
+    - filebeat_squid
