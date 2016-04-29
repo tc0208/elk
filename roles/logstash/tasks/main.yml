@@ -13,6 +13,12 @@
     - logstash-2.2.2
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6")
 
+- name: deploy logstash conf file
+  copy: >
+    src=logstash dest={{ sysconfig_path }}/logstash owner=root group=root mode=0664
+  sudo: True
+  notify: restart logstash
+
 - name: deploy input conf file
   template: >
     src=10-beats-input.j2 dest={{ conf_path }}/10-beats-input.conf owner=root group=root mode=0644
