@@ -1,0 +1,9 @@
+---
+
+- name: deploy td-agent.log conf file
+  template: >
+    src=td-agent.j2 dest={{ conf_path }}/td-agent.conf owner=root group=root mode=0644
+  sudo: True
+  notify: restart td-agent
+
+

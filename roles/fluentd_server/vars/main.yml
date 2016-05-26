@@ -1,0 +1,13 @@
+remote_user: fih
+yum_repo_path: /etc/yum.repos.d
+
+conf_path: /etc/td-agent/
+
+user: root
+group: root
+
+elasticsearch_host: 10.58.70.98
+elasticsearch_port: 9200
+
+syslog_port: 5140
+port: 5141

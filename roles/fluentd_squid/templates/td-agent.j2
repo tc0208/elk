@@ -1,0 +1,16 @@
+
+<source>
+  @type tail
+  path /var/log/squid/access.log 
+  pos_file /var/log/td-agent/squid-access.log.pos 
+  tag squid_access 
+  format /^(?<date>[^ ]+)\s+(?<duration>.*) (?<client address>.*) (?<result code>.*) (?<bytes>.*) (?<request method>.*) (?<url>.*) (?<rfc931>.*) (?<hierarchy code>.*) (?<type>.*)$/
+</source>
+
+<match squid_access*>
+ type forward
+ host {{ fluentd_host }}
+ port {{ port }}
+</match>
+
+

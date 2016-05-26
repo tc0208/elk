@@ -1,0 +1,67 @@
+
+<source>
+  type syslog
+  port {{ syslog_port }}
+  tag  syslog
+</source>
+
+<match syslog.*.*>
+  type record_reformer
+  tag efkl
+  facility ${tag_parts[1]}
+  severity ${tag_parts[2]}
+</match>
+
+<match efkl>
+  type copy
+  <store>
+    type elasticsearch
+    host {{ elasticsearch_host }}
+    port {{ elasticsearch_port }}
+    index_name syslog
+    type_name syslog
+    logstash_format true
+    logstash_prefix syslog
+    logstash_dateformat %Y.%m
+    flush_interval 10s
+  </store>
+</match>
+
+<source>
+  @type tail
+  path /tmp/apr_access.log 
+  pos_file /var/log/td-agent/apr-access.log.pos 
+  tag apr.access 
+  format apache2 
+</source>
+
+<match apr.**>
+  @type elasticsearch
+  host {{ elasticsearch_host }}
+  port {{ elasticsearch_port }}
+  index_name aprlog
+  type_name aprlog
+  logstash_format true
+  logstash_prefix aprlog
+  logstash_dateformat %Y.%m
+  flush_interval 10s
+</match>
+
+<source>
+  type forward
+  port {{ port }}
+  protocol_type tcp
+</source>
+
+<match squid_access**>
+  @type elasticsearch
+  host {{ elasticsearch_host }}
+  port {{ elasticsearch_port }}
+  index_name squid
+  type_name squid
+  logstash_format true
+  logstash_prefix squid
+  logstash_dateformat %Y.%m
+  flush_interval 10s
+</match>
+

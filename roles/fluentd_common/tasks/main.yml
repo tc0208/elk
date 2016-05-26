@@ -1,0 +1,18 @@
+---
+
+#   rpm --import https://packages.treasuredata.com/GPG-KEY-td-agent
+
+- name: add fluentd yum repo
+  copy: >
+    src=td.repo dest={{ yum_repo_path }}/td.repo owner=root group=root mode=0644
+  become: yes
+
+- name: install fluentd
+  remote_user: "{{ remote_user }}"
+  become: yes
+  yum: name={{ item }} state=present
+  with_items:
+    - td-agent-2.3.1
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6")
+
+

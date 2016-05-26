@@ -1,0 +1,6 @@
+---
+- name: setup fluentd server
+  hosts: all
+  roles:
+    - fluentd_common
+    - fluentd_squid
