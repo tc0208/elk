@@ -8,6 +8,13 @@
 </source>
 
 <match squid_access*>
+ @type grep
+ input_key "client address"
+ exclude ^127.0.0.1$
+ add_tag_prefix filtered
+</match>
+
+<match filtered.squid_access*>
  type forward
  host {{ fluentd_host }}
  port {{ port }}
