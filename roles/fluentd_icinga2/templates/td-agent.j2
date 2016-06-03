@@ -1,0 +1,18 @@
+
+<source>
+  @type tail
+  path /var/log/icinga2/icinga2-alert.log
+  pos_file /var/log/td-agent/icinga2.log.pos
+  tag icinga2_alert
+  format csv
+  keys date,notification_type,hostname,host_state,service_name,service_state
+  time_key date
+</source>
+
+<match icinga2_alert*>
+ type forward
+ host {{ fluentd_host }}
+ port {{ port }}
+</match>
+
+

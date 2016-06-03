@@ -1,0 +1,6 @@
+---
+- name: setup fluentd client on icinga2
+  hosts: all
+  roles:
+    - fluentd_common
+    - fluentd_icinga2
