@@ -4,7 +4,7 @@
   path /var/log/squid/access.log 
   pos_file /var/log/td-agent/squid-access.log.pos 
   tag squid_access 
-  format /^(?<date>[^ ]+)\s+(?<duration>.*) (?<client address>.*) (?<result code>.*) (?<bytes>.*) (?<request method>.*) (?<url>.*) (?<rfc931>.*) (?<hierarchy code>.*) (?<type>.*)$/
+  format /^(?<date>[^ ]+)\s+(?<duration>.*) (?<client_address>.*) (?<result_code>.*) (?<bytes>.*) (?<request_method>.*) (?<url>.*) (?<rfc931>.*) (?<hierarchy_code>.*) (?<type>.*)$/
 </source>
 
 <match squid_access*>
